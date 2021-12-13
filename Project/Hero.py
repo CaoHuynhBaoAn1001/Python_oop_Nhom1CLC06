@@ -1,5 +1,7 @@
 #RPG_Games 
 import random
+from random import choices
+import time
 import Weapon
 import Armor
 from abc import ABC, abstractmethod
@@ -48,7 +50,7 @@ class Warrior(Character, Weapon.Axe, Armor.ChainLink):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Assassin(Character,Weapon.Sword, Armor.LightLeatherVest):
 	def Raze(self):
 		print("Raze")
@@ -71,7 +73,7 @@ class Assassin(Character,Weapon.Sword, Armor.LightLeatherVest):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Mage(Character,Weapon.Staff, Armor.ClothRobe):
 	def ArcaneWrath(self):
 		print("ArcaneWrath")
@@ -94,7 +96,7 @@ class Mage(Character,Weapon.Staff, Armor.ClothRobe):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Druid(Character, Weapon.Staff, Armor.LightLeatherVest):
 	def Moonfire(self):
 		print("Moonfire")
@@ -117,7 +119,7 @@ class Druid(Character, Weapon.Staff, Armor.LightLeatherVest):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Goblin(Character):
 	def Alive(self):
 		if (self.healthPoints>0):
@@ -125,14 +127,10 @@ class Goblin(Character):
 		else:
 			return False
 	def Attack(self, character):
-		if (self.Alive != True):
-			return
+		if not self.Alive:
+				return
 		print(self.name + " attacks " + character.name)
-		Goblin_damage = random.random() > 0.5
-		if(Goblin_damage == True):
-			character.Take_damage(self.abilityPoints * 3)
-		else:
-			character.Take_damage(self.abilityPoints)
+		character.Take_damage(self.abilityPoints * (random.randint(110,130)/100))
 	def Take_damage(self,points):
 		self.healthPoints -= points
 		print(self.name + " take damage "+ str(points))
@@ -141,7 +139,7 @@ class Goblin(Character):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Zombie(Character):
 	def Alive(self):
 		if (self.healthPoints>-20):
@@ -161,7 +159,7 @@ class Zombie(Character):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Dragon(Character):	
 	def Alive(self):
 		if (self.healthPoints>0):
@@ -169,14 +167,10 @@ class Dragon(Character):
 		else:
 			return False
 	def Attack(self, character):
-		if (self.Alive != True):
+		if not self.Alive:
 			return
-		print(self.name + " attacks " + character.name)
-		Dragon_damage = random.random() > 0.4
-		if(Dragon_damage == True):
-			character.Take_damage(self.abilityPoints * 5)
-		else:
-			character.Take_damage(self.abilityPoints)
+		print(self.name + " use FireBall to " + character.name)
+		character.Take_damage(self.abilityPoints * (random.randint(140,160)/100))
 	def Take_damage(self,points):
 		self.healthPoints -= points
 		print(self.name + " take damage "+ str(points))
@@ -185,12 +179,10 @@ class Dragon(Character):
 		if(self.name != "Zombie" and self.healthPoints <= 0):
 			print(self.name + "is dead")
 	def print_status(self):
-		print(self.name +" dang co " + str(self.abilityPoints) + " AP  va " + str(self.healthPoints) + "HP")
+		print(self.name +" has " + str(self.abilityPoints) + " AP  and " + str(self.healthPoints) + "HP")
 class Battle():
-	#def Alive(self):
-		#return self.healthPoints>0
 	def do_battle(self, hero, enemy):
-		#print ("Hero faces the %s" % enemy.name)
+		print ("You face "+ enemy.name)
 		print(hero.name + " vs " + enemy.name)
 		while hero.Alive() and enemy.Alive():
 			hero.print_status()
@@ -198,11 +190,12 @@ class Battle():
 			print ("What do you want to do?")
 			print ("1. fight %s" % enemy.name)
 			print ("2. do nothing")
-			print ("3. flee")
+			print ("3. run")
 			print ("> "),
 			n = int(input())
 			if n == 1:
 				hero.Attack(enemy)
+				enemy.Attack(hero)
 			elif n == 2:
 				pass
 			elif n == 3:
@@ -211,22 +204,39 @@ class Battle():
 			else:
 				print ("Invalid input %r" % n)
 				continue
-			enemy.Attack(hero)
 		if hero.Alive():	
 			print ("You defeated the %s" % enemy.name)
 			return True
 		else:
 			print ("YOU LOSE!")
 			return False
-
-#hero = ['Warrior(10,"Melee",100,1,"Wa",10)','Assassin(15,"Melee",80,1,"Assa",10)','Mage(20,"Spellcaster",70,1,"Magee",20)','Druid(20,"Spellcaster",70,1,"Dru",25)']
-hero = Warrior(50,"Melee",100,1,"Wa",10)
-enemies = [Dragon(15,"Boss",200,10,"Dra",30),Zombie(5,"Zombie",50,2,"Zom",5), Goblin(7,"Goblin",60,3,"Goblin",7)]
+enemies =[Dragon(15,"Boss",200,10,"Dragon",30),Zombie(5,"Zombie",50,2,"Zom",5), Goblin(7,"Goblin",60,3,"Goblin",7)]
 battle_engine=Battle()
 
-for enemy in enemies:
-    hero_won = battle_engine.do_battle(hero, enemy)
-    if not hero_won:
-        print("YOU LOSE!")
-        exit(0)
-print ("YOU WIN!")
+while(True):
+	print("-------------------")
+	print("Welcome to RPG Game")
+	print("-------------------")
+	time.sleep(1.5)
+	print("Choose 1 of 4 Class")
+	print("1 : Warrior")
+	print("2 : Assassin")
+	print("3 : Mage")
+	print("4 : Druid")
+	time.sleep(1.5)
+	n = int(input())
+	if(n == 1):
+		hero = Warrior(40,"Melee",160,1,"Warrior",10)
+	elif n == 2:
+		hero = Assassin(50,"Melee",80,1,"Assassin",10)
+	elif n == 3:
+		hero = Mage(30,"Spellcaster",150,1,"Mage",20)
+	elif n == 4:
+		hero = Druid(20,"Spellcaster",200,1,"Druid",25)
+	for i in random.choices(enemies):
+		hero_won = battle_engine.do_battle(hero, i)
+		if not hero_won:
+			print("YOU LOSE!")
+			exit(0)
+	exit(0)
+print("YOU WIN!!")

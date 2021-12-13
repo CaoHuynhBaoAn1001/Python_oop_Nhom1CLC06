@@ -1,6 +1,7 @@
 class ConNguoi:
     def __init__(self):
         self.__ChieuCao = "1.7"
+        self._DoTuoi=18
         self.CanNang = "50" + "kg"
     def printInfo(self):
         print("Chieu cao cua nguoi nay la {}".format(self.__ChieuCao))
