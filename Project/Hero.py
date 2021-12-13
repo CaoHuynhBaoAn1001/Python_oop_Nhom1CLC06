@@ -233,8 +233,8 @@ while(True):
 		hero = Mage(30,"Spellcaster",150,1,"Mage",20)
 	elif n == 4:
 		hero = Druid(20,"Spellcaster",200,1,"Druid",25)
-	for i in random.choices(enemies):
-		hero_won = battle_engine.do_battle(hero, i)
+	for k in random.choices(enemies, weights=[1,2,2],k=5):
+		hero_won = battle_engine.do_battle(hero, k)
 		if not hero_won:
 			print("YOU LOSE!")
 			exit(0)
